@@ -16,54 +16,75 @@ Key project components include:
 
 ---
 
-## 🗃️ Database Schema & Table Overview
+## 🗃️ Database Tables Overview
 
-The Railway Reservation System is composed of four primary tables, each representing a core entity in the reservation workflow:
+This section provides a detailed breakdown of the relational schema used in the Railway Reservation System. The schema includes four core tables: `Passenger`, `Train`, `Booked`, and `Train_Status`. Each table plays a distinct role in modeling passenger details, train information, booking records, and train availability status.
+
+---
 
 <details>
-  <summary><strong>👤 Passenger</strong></summary>
+<summary><strong>👤 Passenger</strong></summary>
 
-- **Purpose:** Stores passenger demographic and identification details.
-- **Key Attributes:**
-  - `SSN` (Primary Key): Unique identifier for each passenger.
-  - `Name`: Full name of the passenger.
-  - `Age`: Age in years.
-  - `Gender`: Male/Female/Other.
-  - `Phone`: Contact number.
+**Purpose:**  
+Stores personal and demographic details of railway passengers.
+
+**Attributes:**
+- `SSN` (INTEGER, **Primary Key**): A unique social security number used to identify each passenger.
+- `First_Name` / `Last_Name` (VARCHAR): Passenger's full name.
+- `Address` (VARCHAR): Street address of the passenger.
+- `City` (VARCHAR): City in which the passenger resides.
+- `County` (VARCHAR): The regional subdivision or county of the passenger’s residence.
+- `Phone2` (CHAR): Secondary contact phone number.
+- `Birth_Date` (DATE): The date of birth used to calculate age or eligibility.
+
 </details>
 
 <details>
-  <summary><strong>🚆 Train</strong></summary>
+<summary><strong>🚆 Train</strong></summary>
 
-- **Purpose:** Holds train-specific information.
-- **Key Attributes:**
-  - `TrainNumber` (Primary Key): Unique ID for each train.
-  - `TrainName`: Name of the train.
-  - `Source`: Departure station.
-  - `Destination`: Arrival station.
-  - `Distance`: Distance between source and destination.
+**Purpose:**  
+Stores static information about trains in the railway system.
+
+**Attributes:**
+- `Train_Number` (INTEGER, **Primary Key**): Unique identifier for each train. Must be between 1 and 5.
+- `Train_Name` (VARCHAR): The name of the train (e.g., Amtrak Express).
+- `Premium_Fair` (FLOAT): Fare for premium-class tickets.
+- `General_Fair` (FLOAT): Fare for general-class tickets.
+- `Source_Station` / `Destination_Station` (VARCHAR): Represents the train route.
+- `Available_Weekdays` (VARCHAR): Comma-separated list of weekdays when the train operates.
+
 </details>
 
 <details>
-  <summary><strong>📅 TrainStatus</strong></summary>
+<summary><strong>🎟️ Booked</strong></summary>
 
-- **Purpose:** Tracks seat availability and travel dates for trains.
-- **Key Attributes:**
-  - `TrainNumber` (Foreign Key → Train)
-  - `DateOfTravel`: Date on which the train runs.
-  - `SeatsAvailable`: Number of seats available on that date.
-  - **Primary Key:** (`TrainNumber`, `DateOfTravel`)
+**Purpose:**  
+Tracks bookings made by passengers, including class type and booking status.
+
+**Attributes:**
+- `Passenger_SSN` (INTEGER, **Foreign Key** → Passenger.SSN): Links the booking to a passenger.
+- `Train_Number` (INTEGER, **Foreign Key** → Train.Train_Number): Links the booking to a train.
+- `Ticket_Type` (VARCHAR): Indicates the booking class. Allowed values are:
+  - `'Premium'`
+  - `'General'`
+- `Status` (VARCHAR): Represents the booking status. Allowed values are:
+  - `'Booked'`: Successfully reserved
+  - `'WaitL'`: On waiting list
+- **Primary Key:** Composite of (`Passenger_SSN`, `Train_Number`)
+
 </details>
 
 <details>
-  <summary><strong>🎫 Booked</strong></summary>
+<summary><strong>📅 Train_Status</strong></summary>
 
-- **Purpose:** Records bookings made by passengers.
-- **Key Attributes:**
-  - `TicketType`: e.g., Confirmed, Waiting List.
-  - `TrainNumber` (Foreign Key → Train)
-  - `DateOfTravel` (Foreign Key → TrainStatus)
-  - `SSN` (Foreign Key → Passenger)
-  - `Status`: Booking status (Confirmed/Cancelled).
-  - **Primary Key:** Composite of (`TicketType`, `TrainNumber`, `DateOfTravel`, `SSN`)
+**Purpose:**  
+Stores the daily seat availability and occupancy statistics for each train.
+
+**Attributes:**
+- `Train_Date` (DATE): The calendar date for which the status applies.
+- `Train_Name` (VARCHAR): The name of the train (not foreign-keyed but assumed consistent with `Train` table).
+- `Premium_Seats_Available` / `General_Seats_Available` (INTEGER): Number of seats available in each class.
+- `Premium_Seats_Occupied` / `General_Seats_Occupied` (INTEGER): Number of booked/occupied seats.
+- **Primary Key:** Composite of (`Train_Name`, `Train_Date`)
+
 </details>
