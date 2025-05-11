@@ -88,3 +88,49 @@ Stores the daily seat availability and occupancy statistics for each train.
 - **Primary Key:** Composite of (`Train_Name`, `Train_Date`)
 
 </details>
+
+## 📥 Data Loading Overview
+
+After defining the database schema, the next step involves populating the tables with actual records using the script `Load_Data_RailwaySystem.sql`. This SQL script inserts values from the corresponding CSV files into their respective tables in a consistent and relationally sound order.
+
+---
+
+### 📂 CSV File → SQL Table Mapping
+
+| CSV File                   | Corresponding Table | Purpose                                             |
+|----------------------------|---------------------|-----------------------------------------------------|
+| `Passenger_Table_Data.csv` | `Passenger`         | Loads passenger details including SSN, name, contact, etc. |
+| `Train_Table_Data.csv`     | `Train`             | Inserts data about trains like names, fares, routes |
+| `TrainStatus_Table_Data.csv` | `Train_Status`     | Inserts seat availability by date and class         |
+| `Booked_Table_Data.csv`    | `Booked`            | Links passengers to trains and records booking type/status |
+
+---
+
+### 🛠️ Script Execution Order
+
+To preserve foreign key constraints and referential integrity, the tables must be loaded in this order:
+
+1. `Passenger`
+2. `Train`
+3. `Train_Status`
+4. `Booked`
+
+---
+
+### 📝 Important Notes
+
+- **Date Format**: Dates in the dataset follow the `YYYY-MM-DD` format.
+- **SSN**: Treated as a unique integer identifier for passengers.
+- **Train Numbers**: Checked to fall within range 1–5 as per schema constraints.
+- **Seats**: Values are validated to be within bounds (0–10) for each class.
+- **Ticket Types**: Only `Premium` and `General` are accepted.
+- **Booking Status**: Only `Booked` or `WaitL` (waitlist) entries are allowed.
+
+You can execute the loading script as follows (in a SQL environment like SQLiteStudio):
+
+```sql
+.read Load_Data_RailwaySystem.sql
+```
+
+This command will load and populate all four tables sequentially with the provided data.
+
