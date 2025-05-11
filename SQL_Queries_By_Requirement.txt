@@ -1,0 +1,70 @@
+SQL Queries used for each question
+__________________________________________________________
+
+2) Given a passenger’s last name and first name and retrieve all trains they are booked on.
+SELECT Train.Train_Number, Train.Train_Name
+FROM Passenger
+JOIN Booked ON Passenger.SSN = Booked.Passenger_SSN
+JOIN Train ON Booked.Train_Number = Train.Train_Number
+WHERE Passenger.First_Name = 'InsertFirstName' AND Passenger.Last_Name = 'InsertLastName';
+
+___________________________________________________________
+
+3) Given a day list the passengers traveling on that day with confirmed tickets. 
+SELECT Passenger.First_Name, Passenger.Last_Name
+FROM Passenger
+JOIN Booked ON Passenger.SSN = Booked.Passenger_SSN
+JOIN Train ON Booked.Train_Number = Train.Train_Number
+WHERE Booked.Status = 'Booked' AND Train.Available_Weekdays LIKE '%InsertDay%';
+
+___________________________________________________________
+
+4)Display the train information (Train Number, Train Name, Source and Destination) and passenger information (Name, Address, Category, ticket status) of passengers who are between the ages of 50 to 60. 
+SELECT Train.Train_Number, Train.Train_Name, Train.Source_Station, Train.Destination_Station, Passenger.First_Name, Passenger.Last_Name, Passenger.Address, Booked.Ticket_Type, Booked.Status
+FROM Passenger
+JOIN Booked ON Passenger.SSN = Booked.Passenger_SSN
+JOIN Train ON Booked.Train_Number = Train.Train_Number
+WHERE strftime('%Y', 'now') - strftime('%Y', Passenger.Birth_Date) BETWEEN 50 AND 60;
+
+___________________________________________
+
+5)List train name, day and number of passenger on that train. 
+SELECT Train.Train_Name, Train_Status.Train_Date, Train_Status.Premium_Seats_Occupied + Train_Status.General_Seats_Occupied
+FROM Train
+JOIN Train_Status ON Train.Train_Name = Train_Status.Train_Name;
+
+___________________________________________
+
+6) Enter a train name and retrieve all the passengers with confirmed status traveling on that train.
+SELECT Passenger.First_Name, Passenger.Last_Name
+FROM Passenger
+JOIN Booked ON Passenger.SSN = Booked.Passenger_SSN
+JOIN Train ON Booked.Train_Number = Train.Train_Number
+WHERE Train.Train_Name = 'EnterTrainName' AND Booked.Status = 'Booked';
+
+__________________________________________________________
+
+7) List passengers that are waitlisted including the name of the train.
+SELECT Passenger.First_Name, Passenger.Last_Name, Train.Train_Name
+FROM Passenger
+JOIN Booked ON Passenger.SSN = Booked.Passenger_SSN
+JOIN Train ON Booked.Train_Number = Train.Train_Number
+WHERE Booked.Status = 'WaitL';
+
+__________________________________________________________
+
+8) List passenger names in descending order that have '605' phone area code.
+SELECT First_Name, Last_Name
+FROM Passenger
+WHERE Phone2 LIKE '605%'
+ORDER BY First_Name DESC, Last_Name DESC;
+
+__________________________________________________________
+
+9)List name of passengers that are traveling on Thursdays in ascending order.
+SELECT Passenger.First_Name, Passenger.Last_Name
+FROM Passenger
+JOIN Booked ON Passenger.SSN = Booked.Passenger_SSN
+JOIN Train ON Booked.Train_Number = Train.Train_Number
+WHERE Train.Available_Weekdays LIKE '%Thursday%' AND Booked.Status = 'Booked'
+ORDER BY Passenger.First_Name ASC;
