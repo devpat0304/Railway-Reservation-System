@@ -15,3 +15,55 @@ Key project components include:
 > To demonstrate strong understanding of **database schema design**, **relational modeling**, and **query execution** by building a fully functional mini-RDBMS mimicking a real-world railway ticketing environment.
 
 ---
+
+## 🗃️ Database Schema & Table Overview
+
+The Railway Reservation System is composed of four primary tables, each representing a core entity in the reservation workflow:
+
+<details>
+  <summary><strong>👤 Passenger</strong></summary>
+
+- **Purpose:** Stores passenger demographic and identification details.
+- **Key Attributes:**
+  - `SSN` (Primary Key): Unique identifier for each passenger.
+  - `Name`: Full name of the passenger.
+  - `Age`: Age in years.
+  - `Gender`: Male/Female/Other.
+  - `Phone`: Contact number.
+</details>
+
+<details>
+  <summary><strong>🚆 Train</strong></summary>
+
+- **Purpose:** Holds train-specific information.
+- **Key Attributes:**
+  - `TrainNumber` (Primary Key): Unique ID for each train.
+  - `TrainName`: Name of the train.
+  - `Source`: Departure station.
+  - `Destination`: Arrival station.
+  - `Distance`: Distance between source and destination.
+</details>
+
+<details>
+  <summary><strong>📅 TrainStatus</strong></summary>
+
+- **Purpose:** Tracks seat availability and travel dates for trains.
+- **Key Attributes:**
+  - `TrainNumber` (Foreign Key → Train)
+  - `DateOfTravel`: Date on which the train runs.
+  - `SeatsAvailable`: Number of seats available on that date.
+  - **Primary Key:** (`TrainNumber`, `DateOfTravel`)
+</details>
+
+<details>
+  <summary><strong>🎫 Booked</strong></summary>
+
+- **Purpose:** Records bookings made by passengers.
+- **Key Attributes:**
+  - `TicketType`: e.g., Confirmed, Waiting List.
+  - `TrainNumber` (Foreign Key → Train)
+  - `DateOfTravel` (Foreign Key → TrainStatus)
+  - `SSN` (Foreign Key → Passenger)
+  - `Status`: Booking status (Confirmed/Cancelled).
+  - **Primary Key:** Composite of (`TicketType`, `TrainNumber`, `DateOfTravel`, `SSN`)
+</details>
