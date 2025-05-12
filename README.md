@@ -238,36 +238,55 @@ ORDER BY Passenger.First_Name ASC;
 ```
 </details>
 
-## 📊 Key Results & Insights
+# 🛠️ Database Design & Relationships
 
-Throughout the project, multiple SQL queries were run across real-world data to extract meaningful travel and booking insights for the Railway Reservation System. Below are **data-backed results** and **key findings** from our exploration:
+The Railway Reservation System project follows a normalized relational schema using four core entities that are connected via primary and foreign key constraints. The schema design ensures data integrity and supports a range of queries related to train travel, bookings, and passengers.
 
-### 🧾 Confirmed Bookings by Day
+---
 
-- When filtering by confirmed tickets (`Status = 'Booked'`) and weekday availability (`Available_Weekdays`), we found **Friday** to be one of the most popular travel days across multiple trains.
-- This indicates strong weekend outbound travel demand, especially among working professionals or casual travelers.
+## 🔗 Entity Relationships
 
-### 👤 Passenger Age Analysis
+### 👤 Passenger
+- **Primary Key:** `SSN`
+- Contains personal information such as name, address, city, phone, and birth date.
+- Serves as a parent table in the `Booked` relationship.
 
-- A focused age-based query showed that several passengers in the **50–60 age group** were actively traveling on premium trains.
-- Most of these travelers had “Booked” status rather than waitlisted, indicating a preference (and ability) to plan ahead or afford premium fares.
+### 🚆 Train
+- **Primary Key:** `Train_Number`
+- Stores details like train name, source/destination stations, fare types, and operating weekdays.
+- Acts as a parent in both the `Booked` and `Train_Status` tables.
 
-### 🚆 Passenger Load by Train & Date
+### 🎫 Booked
+- **Composite Primary Key:** (`Passenger_SSN`, `Train_Number`)
+- **Foreign Keys:** 
+  - `Passenger_SSN` → `Passenger.SSN`
+  - `Train_Number` → `Train.Train_Number`
+- Captures ticket details for each passenger, including ticket type and booking status (Booked or Waitlisted).
 
-- Using data from the `Train_Status` table, we analyzed occupancy trends:
-  - **Train A** (e.g., Amtrak or named equivalent in data) had **high occupancy** on certain dates with only **1–2 premium seats remaining**, signaling peak usage windows.
-  - **Train C** showed moderate usage across weekdays, suggesting it serves less congested routes.
+### 📅 Train_Status
+- **Composite Primary Key:** (`Train_Name`, `Train_Date`)
+- Tracks seat availability and occupancy per train per date.
+- Includes fields for premium/general seat counts.
+- `Train_Name` links indirectly with the `Train` table.
 
-### 📱 Area Code Demographics
+---
 
-- A SQL filter revealed that several passengers with phone numbers starting in area code `605` (South Dakota) were active users of the system.
-- These passengers were sorted and listed in descending alphabetical order, revealing potential regional outreach or usage spikes from specific counties.
+## 🧩 Summary of Relationships
 
-### ⏳ Waitlisted Demand
+- A **Passenger** can book **multiple Trains** → _One-to-Many_
+- A **Train** can have **many Passengers** booked → _One-to-Many_
+- **Train_Status** tracks operational details per **Train** on specific **Dates**
+- The system uses **composite keys** to manage many-to-many relations and time-specific data
 
-- A snapshot of `Status = 'WaitL'` bookings showed that multiple passengers were unable to get confirmed seats on some popular trains, possibly due to:
-  - Capacity constraints
-  - Uneven seat allocation between General and Premium tiers
-- This highlights the **need for dynamic capacity planning** in future system iterations.
+```
+Passenger --< Booked >-- Train --< Train_Status
+```
 
-These insights were generated using live queries on the dataset and confirmed through visual inspections in SQLiteStudio.
+Each connection supports referential integrity and enables complex SQL queries such as:
+- Who is traveling on a specific day?
+- How many premium seats are booked for a train?
+- Which trains are passengers between age 50–60 booked on?
+
+---
+
+This schema promotes scalability, modular query writing, and efficient data handling across the reservation workflow.
