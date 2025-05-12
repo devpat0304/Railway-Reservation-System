@@ -386,6 +386,8 @@ The **Entity-Relationship Diagram (ERD)** provides a visual summary of the datab
 - **Train**: `Train_Number`  
 - **Booked**: Composite → (`Passenger_SSN`, `Train_Number`)  
 - **Train_Status**: Composite → (`Train_Name`, `Train_Date`)
+  
+---
 
 ## 🎓 Learning Outcomes
 
@@ -414,4 +416,38 @@ This Railway Reservation System project offered valuable hands-on experience wit
 ---
 
 This project served as a comprehensive introduction to practical database management and helped reinforce theoretical concepts through meaningful implementation.
+
+## 🚀 Future Enhancements
+
+While the current implementation of the **Railway Reservation System** project meets the outlined requirements, several features could enhance its functionality and scalability:
+
+- **🧾 E-Ticket Generation**  
+  Implement functionality to generate and export digital tickets as PDF files after successful bookings.
+
+- **📅 Calendar-Based Travel Selection**  
+  Allow passengers to pick travel dates using an integrated calendar UI for better user interaction.
+
+- **🔐 User Login & Role Management**  
+  Introduce login roles (e.g., Admin, Passenger) to separate data access levels and add security.
+
+- **📊 Dashboard Analytics**  
+  Provide administrative dashboards for monitoring seat occupancy trends, cancellation rates, and peak travel times.
+
+- **🌐 Web-Based Front-End**  
+  Build a responsive web interface using Flask/Django or React to enable real-time interaction with the database.
+
+- **📦 Normalize Train Status Data Further**  
+  Separate seat types into a different table to reduce redundancy and improve data consistency.
+
+---
+
+## 🙏 Thank You
+
+Thank you for taking the time to explore the **Railway Reservation System** project!
+
+This project served as a valuable hands-on experience in database schema design, SQL query building, data normalization, and entity relationship modeling.  
+We hope it provides insight into relational database structures and serves as a useful reference for academic or development use.
+
+Feel free to ⭐ star, fork, or contribute — and happy querying! 🚂💻
+
 
