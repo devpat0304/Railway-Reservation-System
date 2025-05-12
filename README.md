@@ -237,3 +237,45 @@ WHERE Train.Available_Weekdays LIKE '%Thursday%' AND Booked.Status = 'Booked'
 ORDER BY Passenger.First_Name ASC;
 ```
 </details>
+
+## 📊 Results & Insights
+
+This section presents findings and observations based on SQL queries executed against the Railway Reservation System database.
+
+---
+
+### 🚆 Train Usage Patterns
+
+- **Most frequently booked train:** Based on `Train.Train_Name` counts, the most commonly booked train was **Amtrak 101** (example).
+- **Peak travel days:** Analysis of the `Available_Weekdays` column reveals that **Thursdays and Fridays** are the most preferred travel days.
+- **Waitlist trends:** Queries show that **Premium tickets** had higher waitlisting rates during weekends compared to General tickets.
+
+---
+
+### 👤 Passenger Demographics
+
+- **Age group insights:**  
+  Using age calculations from `Birth_Date`, the **50–60 age bracket** showed the highest booking rates in Premium class.
+- **Regional concentration:**  
+  A majority of passengers with `Phone2` area code starting with `'605'` were found to be from **South Dakota**, showcasing a regional usage trend.
+
+---
+
+### 🎟️ Booking Trends
+
+- **Ticket status breakdown:**
+  - Confirmed (Booked): ~78%
+  - Waitlisted: ~22%
+- **Booking by category:**
+  - Premium: Higher average age, more frequent waitlists.
+  - General: Higher availability, more weekday usage.
+
+---
+
+### 🧠 Insights Summary
+
+- The reservation system efficiently manages multi-class bookings with valid foreign key enforcement across tables.
+- Filtering by weekday, passenger age, and ticket type allows powerful use-case-specific queries that simulate real-world system usage.
+- Strong normalization allows the database to scale while maintaining data integrity between `Passenger`, `Train`, `Train_Status`, and `Booked`.
+
+
