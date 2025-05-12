@@ -387,3 +387,31 @@ The **Entity-Relationship Diagram (ERD)** provides a visual summary of the datab
 - **Booked**: Composite → (`Passenger_SSN`, `Train_Number`)  
 - **Train_Status**: Composite → (`Train_Name`, `Train_Date`)
 
+## 🎓 Learning Outcomes
+
+This Railway Reservation System project offered valuable hands-on experience with designing, implementing, and querying a relational database system. Below is a summary of the key academic and technical takeaways from this project:
+
+---
+
+### 🧩 ERD Modeling
+- Gained a deeper understanding of how to design entity-relationship diagrams (ERDs) to reflect real-world systems.
+- Practiced converting ERDs into normalized table schemas using primary and foreign keys.
+
+### 🧠 SQL Joins, Constraints, and Queries
+- Developed complex SQL queries using multiple joins across four interrelated tables.
+- Implemented and tested constraints like `CHECK`, `NOT NULL`, and `PRIMARY KEY` to enforce data integrity.
+- Used pattern matching, subqueries, and filtering logic effectively.
+
+### 🗃️ Relational Schema Design
+- Understood how to design a normalized schema to avoid redundancy and improve query performance.
+- Structured many-to-many relationships using composite keys (e.g., `Booked` and `Train_Status` tables).
+
+### 🔧 Data Loading & Debugging
+- Used `.csv` files and `INSERT` scripts to load real data into the database.
+- Debugged schema violations and refined SQL logic through iterative testing.
+- Verified referential integrity and ensured all queries returned accurate results.
+
+---
+
+This project served as a comprehensive introduction to practical database management and helped reinforce theoretical concepts through meaningful implementation.
+
