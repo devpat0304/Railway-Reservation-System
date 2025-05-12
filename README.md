@@ -344,3 +344,46 @@ To ensure efficient performance and data integrity within the Railway Reservatio
 
 By applying these indexing and optimization strategies, the system maintains fast performance and consistent data handling, even as more records are added.
 
+## 🧩 Entity-Relationship Diagram (ERD)
+
+The **Entity-Relationship Diagram (ERD)** provides a visual summary of the database structure for the Railway Reservation System. It identifies how entities (tables) are interrelated through foreign keys and primary keys.
+
+---
+
+### 🔗 Entities & Relationships
+
+| Entity          | Description                                                                 |
+|------------------|-----------------------------------------------------------------------------|
+| **Passenger**     | Stores information about passengers, including SSN, name, and contact data. |
+| **Train**         | Contains details about trains such as route, name, and fares.              |
+| **Booked**        | Connects passengers and trains, tracks booking status and ticket type.     |
+| **Train_Status**  | Holds daily seat availability and occupancy for each train.                |
+
+---
+
+### 📘 Relationships Overview
+
+- `Passenger` **1 → M** `Booked`  
+  → One passenger can have multiple bookings.
+
+- `Train` **1 → M** `Booked`  
+  → Each train can be booked by multiple passengers.
+
+- `Train` **1 → M** `Train_Status`  
+  → Each train has a status for each date it runs.
+
+#### 🔒 Foreign Key Constraints
+
+- `Booked.Passenger_SSN` → `Passenger.SSN`
+- `Booked.Train_Number` → `Train.Train_Number`
+- `Train_Status.Train_Name` → `Train.Train_Name`
+
+---
+
+### 🗝️ Primary Keys
+
+- **Passenger**: `SSN`  
+- **Train**: `Train_Number`  
+- **Booked**: Composite → (`Passenger_SSN`, `Train_Number`)  
+- **Train_Status**: Composite → (`Train_Name`, `Train_Date`)
+
