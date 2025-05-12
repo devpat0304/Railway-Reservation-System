@@ -136,147 +136,104 @@ This command will load and populate all four tables sequentially with the provid
 
 ---
 
-## 🔎 SQL Query Examples & Use Cases
 
-This section highlights key SQL queries used in the Railway Reservation System to fulfill specific business requirements.
+## 📌 SQL Query Examples & Use Cases
+
+Below are real SQL queries used to retrieve data from the Railway Reservation System database.
 
 <details>
-  <summary><strong>1. 🚆 List All Trains Running Between Two Stations</strong></summary>
+<summary><strong>🔍 1. Retrieve trains booked by a specific passenger</strong></summary>
 
 ```sql
-SELECT Train_Name, Source_Station, Destination_Station
+SELECT Train.Train_Number, Train.Train_Name
+FROM Passenger
+JOIN Booked ON Passenger.SSN = Booked.Passenger_SSN
+JOIN Train ON Booked.Train_Number = Train.Train_Number
+WHERE Passenger.First_Name = 'InsertFirstName' AND Passenger.Last_Name = 'InsertLastName';
+```
+</details>
+
+<details>
+<summary><strong>📅 2. List passengers traveling on a specific day with confirmed tickets</strong></summary>
+
+```sql
+SELECT Passenger.First_Name, Passenger.Last_Name
+FROM Passenger
+JOIN Booked ON Passenger.SSN = Booked.Passenger_SSN
+JOIN Train ON Booked.Train_Number = Train.Train_Number
+WHERE Booked.Status = 'Booked' AND Train.Available_Weekdays LIKE '%InsertDay%';
+```
+</details>
+
+<details>
+<summary><strong>🎟️ 3. Display train and passenger details for passengers aged 50–60</strong></summary>
+
+```sql
+SELECT Train.Train_Number, Train.Train_Name, Train.Source_Station, Train.Destination_Station, 
+       Passenger.First_Name, Passenger.Last_Name, Passenger.Address, 
+       Booked.Ticket_Type, Booked.Status
+FROM Passenger
+JOIN Booked ON Passenger.SSN = Booked.Passenger_SSN
+JOIN Train ON Booked.Train_Number = Train.Train_Number
+WHERE strftime('%Y', 'now') - strftime('%Y', Passenger.Birth_Date) BETWEEN 50 AND 60;
+```
+</details>
+
+<details>
+<summary><strong>🚆 4. List train name, date, and passenger count</strong></summary>
+
+```sql
+SELECT Train.Train_Name, Train_Status.Train_Date, 
+       Train_Status.Premium_Seats_Occupied + Train_Status.General_Seats_Occupied AS Total_Passengers
 FROM Train
-WHERE Source_Station = 'Dallas' AND Destination_Station = 'Houston';
+JOIN Train_Status ON Train.Train_Name = Train_Status.Train_Name;
 ```
-
-**Use Case:**  
-Allows users to view available trains between any two locations.
 </details>
 
 <details>
-  <summary><strong>2. 🎫 Retrieve All Bookings for a Specific Passenger</strong></summary>
+<summary><strong>✅ 5. Get confirmed passengers for a specific train</strong></summary>
 
 ```sql
-SELECT B.Ticket_Type, B.Status, T.Train_Name
-FROM Booked B
-JOIN Train T ON B.Train_Number = T.Train_Number
-WHERE B.Passenger_SSN = 123456789;
+SELECT Passenger.First_Name, Passenger.Last_Name
+FROM Passenger
+JOIN Booked ON Passenger.SSN = Booked.Passenger_SSN
+JOIN Train ON Booked.Train_Number = Train.Train_Number
+WHERE Train.Train_Name = 'EnterTrainName' AND Booked.Status = 'Booked';
 ```
-
-**Use Case:**  
-Shows ticket type and status (Booked/WaitL) for a given passenger based on their SSN.
 </details>
 
 <details>
-  <summary><strong>3. 📅 Get Seat Availability by Date and Train</strong></summary>
+<summary><strong>🕓 6. List all waitlisted passengers and their train name</strong></summary>
 
 ```sql
-SELECT Train_Name, Train_Date, Premium_Seats_Available, General_Seats_Available
-FROM Train_Status
-WHERE Train_Name = 'Texas Eagle' AND Train_Date = '2025-05-20';
+SELECT Passenger.First_Name, Passenger.Last_Name, Train.Train_Name
+FROM Passenger
+JOIN Booked ON Passenger.SSN = Booked.Passenger_SSN
+JOIN Train ON Booked.Train_Number = Train.Train_Number
+WHERE Booked.Status = 'WaitL';
 ```
-
-**Use Case:**  
-Displays how many premium and general seats are available for a specific train on a given date.
 </details>
 
 <details>
-  <summary><strong>4. 📊 Count Number of Passengers Booked on Each Train</strong></summary>
+<summary><strong>📞 7. Passengers with phone area code '605' (descending order)</strong></summary>
 
 ```sql
-SELECT T.Train_Name, COUNT(*) AS Total_Passengers
-FROM Booked B
-JOIN Train T ON B.Train_Number = T.Train_Number
-GROUP BY T.Train_Name;
+SELECT First_Name, Last_Name
+FROM Passenger
+WHERE Phone2 LIKE '605%'
+ORDER BY First_Name DESC, Last_Name DESC;
 ```
-
-**Use Case:**  
-Aggregates passenger bookings per train for administrative review or analytics.
 </details>
 
 <details>
-  <summary><strong>5. 🧍‍♂️ List All Passengers with 'Booked' Status</strong></summary>
+<summary><strong>📆 8. Passengers traveling on Thursdays (ascending order)</strong></summary>
 
 ```sql
-SELECT P.First_Name, P.Last_Name, P.Phone2, B.Status
-FROM Passenger P
-JOIN Booked B ON P.SSN = B.Passenger_SSN
-WHERE B.Status = 'Booked';
+SELECT Passenger.First_Name, Passenger.Last_Name
+FROM Passenger
+JOIN Booked ON Passenger.SSN = Booked.Passenger_SSN
+JOIN Train ON Booked.Train_Number = Train.Train_Number
+WHERE Train.Available_Weekdays LIKE '%Thursday%' AND Booked.Status = 'Booked'
+ORDER BY Passenger.First_Name ASC;
 ```
-
-## 🔎 SQL Query Examples & Use Cases
-
-This section highlights key SQL queries used in the Railway Reservation System to fulfill specific business requirements.
-
-<details>
-  <summary><strong>1. 🚆 List All Trains Running Between Two Stations</strong></summary>
-
-```sql
-SELECT Train_Name, Source_Station, Destination_Station
-FROM Train
-WHERE Source_Station = 'Dallas' AND Destination_Station = 'Houston';
-```
-
-**Use Case:**  
-Allows users to view available trains between any two locations.
-</details>
-
-<details>
-  <summary><strong>2. 🎫 Retrieve All Bookings for a Specific Passenger</strong></summary>
-
-```sql
-SELECT B.Ticket_Type, B.Status, T.Train_Name
-FROM Booked B
-JOIN Train T ON B.Train_Number = T.Train_Number
-WHERE B.Passenger_SSN = 123456789;
-```
-
-**Use Case:**  
-Shows ticket type and status (Booked/WaitL) for a given passenger based on their SSN.
-</details>
-
-<details>
-  <summary><strong>3. 📅 Get Seat Availability by Date and Train</strong></summary>
-
-```sql
-SELECT Train_Name, Train_Date, Premium_Seats_Available, General_Seats_Available
-FROM Train_Status
-WHERE Train_Name = 'Texas Eagle' AND Train_Date = '2025-05-20';
-```
-
-**Use Case:**  
-Displays how many premium and general seats are available for a specific train on a given date.
-</details>
-
-<details>
-  <summary><strong>4. 📊 Count Number of Passengers Booked on Each Train</strong></summary>
-
-```sql
-SELECT T.Train_Name, COUNT(*) AS Total_Passengers
-FROM Booked B
-JOIN Train T ON B.Train_Number = T.Train_Number
-GROUP BY T.Train_Name;
-```
-
-**Use Case:**  
-Aggregates passenger bookings per train for administrative review or analytics.
-</details>
-
-<details>
-  <summary><strong>5. 🧍‍♂️ List All Passengers with 'Booked' Status</strong></summary>
-
-```sql
-SELECT P.First_Name, P.Last_Name, P.Phone2, B.Status
-FROM Passenger P
-JOIN Booked B ON P.SSN = B.Passenger_SSN
-WHERE B.Status = 'Booked';
-```
-
-**Use Case:**  
-Retrieves a list of passengers who currently have confirmed bookings.
-</details>
-
-
-**Use Case:**  
-Retrieves a list of passengers who currently have confirmed bookings.
 </details>
