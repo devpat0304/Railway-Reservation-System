@@ -204,6 +204,79 @@ JOIN Booked B ON P.SSN = B.Passenger_SSN
 WHERE B.Status = 'Booked';
 ```
 
+## 🔎 SQL Query Examples & Use Cases
+
+This section highlights key SQL queries used in the Railway Reservation System to fulfill specific business requirements.
+
+<details>
+  <summary><strong>1. 🚆 List All Trains Running Between Two Stations</strong></summary>
+
+```sql
+SELECT Train_Name, Source_Station, Destination_Station
+FROM Train
+WHERE Source_Station = 'Dallas' AND Destination_Station = 'Houston';
+```
+
+**Use Case:**  
+Allows users to view available trains between any two locations.
+</details>
+
+<details>
+  <summary><strong>2. 🎫 Retrieve All Bookings for a Specific Passenger</strong></summary>
+
+```sql
+SELECT B.Ticket_Type, B.Status, T.Train_Name
+FROM Booked B
+JOIN Train T ON B.Train_Number = T.Train_Number
+WHERE B.Passenger_SSN = 123456789;
+```
+
+**Use Case:**  
+Shows ticket type and status (Booked/WaitL) for a given passenger based on their SSN.
+</details>
+
+<details>
+  <summary><strong>3. 📅 Get Seat Availability by Date and Train</strong></summary>
+
+```sql
+SELECT Train_Name, Train_Date, Premium_Seats_Available, General_Seats_Available
+FROM Train_Status
+WHERE Train_Name = 'Texas Eagle' AND Train_Date = '2025-05-20';
+```
+
+**Use Case:**  
+Displays how many premium and general seats are available for a specific train on a given date.
+</details>
+
+<details>
+  <summary><strong>4. 📊 Count Number of Passengers Booked on Each Train</strong></summary>
+
+```sql
+SELECT T.Train_Name, COUNT(*) AS Total_Passengers
+FROM Booked B
+JOIN Train T ON B.Train_Number = T.Train_Number
+GROUP BY T.Train_Name;
+```
+
+**Use Case:**  
+Aggregates passenger bookings per train for administrative review or analytics.
+</details>
+
+<details>
+  <summary><strong>5. 🧍‍♂️ List All Passengers with 'Booked' Status</strong></summary>
+
+```sql
+SELECT P.First_Name, P.Last_Name, P.Phone2, B.Status
+FROM Passenger P
+JOIN Booked B ON P.SSN = B.Passenger_SSN
+WHERE B.Status = 'Booked';
+```
+
+**Use Case:**  
+Retrieves a list of passengers who currently have confirmed bookings.
+</details>
+
+
 **Use Case:**  
 Retrieves a list of passengers who currently have confirmed bookings.
 </details>
