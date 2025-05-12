@@ -290,3 +290,57 @@ Each connection supports referential integrity and enables complex SQL queries s
 ---
 
 This schema promotes scalability, modular query writing, and efficient data handling across the reservation workflow.
+
+## 🔍 Query Optimization & Indexing
+
+To ensure efficient performance and data integrity within the Railway Reservation System database, several indexing and optimization techniques were applied:
+
+### 🔑 Primary & Composite Keys
+
+- **Passenger Table**
+  - `SSN` was chosen as the **primary key** to uniquely identify each passenger and speed up lookups involving bookings or passenger queries.
+
+- **Train Table**
+  - `Train_Number` was selected as the **primary key** since it's the most reliable identifier for train entries and facilitates fast JOIN operations.
+
+- **Train_Status Table**
+  - A **composite key** (`Train_Name`, `Train_Date`) was used to represent the unique status of a train on a specific day, enabling precise and indexed searches for availability and occupancy.
+
+- **Booked Table**
+  - Composite primary key on (`Passenger_SSN`, `Train_Number`) ensures that a passenger can only be booked once per train, and enforces integrity on cross-referenced data.
+
+---
+
+### 📏 Data Constraints for Integrity
+
+- **Check Constraints**
+  - `Ticket_Type` limited to `'Premium'` or `'General'`
+  - `Status` limited to `'Booked'` or `'WaitL'`
+  - Numeric bounds on `Seats_Available` and `Seats_Occupied` (0–10) in `Train_Status` to simulate realistic booking limits
+
+- **Foreign Keys**
+  - Enforced between:
+    - `Booked` ↔ `Passenger` (via `Passenger_SSN`)
+    - `Booked` ↔ `Train` (via `Train_Number`)
+    - `Train_Status` ↔ `Train` (via `Train_Name`)
+  - Ensures all booking and status entries point to valid entities.
+
+---
+
+### 🔁 Query Performance Improvements
+
+- **JOIN Optimization**
+  - Use of indexed primary keys enables faster JOINs between `Passenger`, `Booked`, and `Train`.
+  - Joins leverage SSN and Train_Number lookups, avoiding full table scans.
+
+- **Normalized Schema**
+  - Proper decomposition of tables reduces redundancy (e.g., separating `Train_Status` from `Train`)
+  - Simplifies data updates and reduces inconsistency risk.
+
+- **Selective Filtering**
+  - WHERE conditions like `Status = 'Booked'` and `Available_Weekdays LIKE '%Thursday%'` use indexed fields for faster subset retrieval.
+
+---
+
+By applying these indexing and optimization strategies, the system maintains fast performance and consistent data handling, even as more records are added.
+
