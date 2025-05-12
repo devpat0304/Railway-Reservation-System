@@ -89,6 +89,29 @@ Stores the daily seat availability and occupancy statistics for each train.
 
 </details>
 
+---
+
+## 🧰 Technologies & Tools Used
+
+### 💻 Languages
+![SQL](https://img.shields.io/badge/SQL-025E8C.svg?style=for-the-badge&logo=sqlite&logoColor=white)
+
+### 🧪 Tools & Frameworks
+![SQLite](https://img.shields.io/badge/SQLite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
+![DB Browser for SQLite](https://img.shields.io/badge/DB%20Browser%20for%20SQLite-336791?style=for-the-badge&logo=sqlite&logoColor=white)
+
+### 📚 Libraries
+![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)  
+Used for reading and interpreting CSV files if needed in preprocessing or visualization phases.
+
+### 🧠 Methodologies
+![Relational Modeling](https://img.shields.io/badge/Relational%20Modeling-%2367C2A3.svg?style=for-the-badge)
+![ER Diagrams](https://img.shields.io/badge/ER%20Diagram-%23F29111.svg?style=for-the-badge)
+![Schema Normalization](https://img.shields.io/badge/Schema%20Normalization-%235A8DEE.svg?style=for-the-badge)
+
+These technologies supports the creation of a relational database from conceptual design (ERD) to implementation, query development, and results interpretation.
+
+---
 ## 📥 Data Loading Overview
 
 After defining the database schema, the next step involves populating the tables with actual records using the script `Load_Data_RailwaySystem.sql`. This SQL script inserts values from the corresponding CSV files into their respective tables in a consistent and relationally sound order.
